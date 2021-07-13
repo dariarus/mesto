@@ -1,0 +1,14 @@
+.gallery-item__signature {
+  flex: 1;
+  margin: 0;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #000000;
+}

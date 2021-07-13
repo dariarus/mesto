@@ -1,0 +1,21 @@
+.gallery {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 76px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  gap: 20px 17px;
+  justify-content: center;
+}
+
+@media screen and (max-width: 756px) {
+  .gallery {
+    padding: 38px 0 0;
+  }
+}
+
+@media screen and (max-width: 464px) {
+  .gallery {
+    padding: 36px 0 0;
+  }
+}

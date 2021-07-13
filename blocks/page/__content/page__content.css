@@ -1,0 +1,19 @@
+.page__content {
+  box-sizing: border-box;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 984px) {
+  .page__content {
+    padding-right: 34px;
+    padding-left: 34px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .page__content {
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+}

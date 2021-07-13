@@ -1,0 +1,15 @@
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  max-width: 880px;
+  width: 100%;
+  padding-top: 67px;
+  padding-bottom: 60px;
+}
+
+@media screen and (max-width: 464px) {
+  .footer {
+    padding-top: 48px;
+    padding-bottom: 36px;
+  }
+}
