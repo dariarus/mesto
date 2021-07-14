@@ -2,14 +2,14 @@
 
 1.1 Открытие и закрытие модального окна */
 // выбор кнопок редактирования профиля и добавления карточки
-const editProfileButton = document.querySelector('.profile__edit-button');
-const addCardButton = document.querySelector('.profile__add-button');
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonAddCard = document.querySelector('.profile__add-button');
 
 // выбор попапов и кнопок закрытия внутри них
-const editProfilePopup = document.querySelector('.popup_type_edit-profile');
-const addCardPopup = document.querySelector('.popup_type_add-card');
-const closeEditProfileButton = editProfilePopup.querySelector('.popup__close-icon');
-const closeAddCardButton = addCardPopup.querySelector('.popup__close-icon');
+const popupEditProfile = document.querySelector('.popup_type_edit-profile');
+const popupAddCard = document.querySelector('.popup_type_add-card');
+const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-icon');
+const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
 
 // (6.) поиск контейнера для карточек в DOM
 const cardContainer = document.querySelector('.gallery');
@@ -17,39 +17,18 @@ const cardContainer = document.querySelector('.gallery');
 // (6.) поиск формы создания новой карточки в DOM
 const formAddCardElement = document.querySelector('[name="add card form"]');
 
-// (6.) массив дефолтных карточек
-const initialCards = [
-  {
-    name: "Уральские горы",
-    link: "https://www.miroworld.ru/wp-content/uploads/2018/08/Uralskie-gory.jpg"
-  },
-  {
-    name: "Балтийское море",
-    link: "https://faktoved.ru/wp-content/uploads/fakti-o-baltiyskom-more.jpg"
-  },
-  {
-    name: "Геленджик",
-    link: "https://gge.ru/upload/iblock/1dd/gelendzhik2.jpg"
-  },
-  {
-    name: "Домбай",
-    link: "https://c1.staticflickr.com/3/2857/34131350951_ae3b3c56b9_o.jpg"
-  },
-  {
-    name: "Гора Эльбрус",
-    link: "https://cdn2.tu-tu.ru/image/pagetree_node_data/1/60969a99bfee0f30a4f2894acab45073/"
-  },
-  {
-    name: "Карачаевск",
-    link: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/43/51/c6/shoana-church.jpg?w=1100&h=-1&s=1"
-  }
-];
-
 // добавление дефолтных карточек при загрузке страницы
 window.onload = function () {
   initialCards.forEach(item => {
     addCard(item, cardContainer);
-  })
+  });
+  // выбор попапа и кнопки закрытия внутри него
+  const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
+  const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
+  // обработчик событий для кнопки закрытия попапа с фотографией
+  buttonClosePhoto.addEventListener('click', () => {
+    closePopup(popupOpenPhoto);
+  });
 };
 
 // функция откртытия попапа общая
@@ -57,14 +36,25 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
 
-// обработчик событий для кнопки открытия попапа редактирования профиля
-editProfileButton.addEventListener('click', () => {
-  openPopup(editProfilePopup);
-});
+// функция открытия попапа с изображением из карточки
+function openPopupImage (card) {
+  // выбор попапа
+  const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
+  // открытие попапа
+    openPopup(popupOpenPhoto);
+    // выбор контейнера попапа
+    const image = popupOpenPhoto.querySelector('.popup__opened-image');
+    // заполнение контейнера нужным содержимым (изображение + подпись) в зависимости от кликнутой картинки
+    image.src = card.link;
+    image.alt = card.name;
+    const signature = popupOpenPhoto.querySelector('.popup__image-signature');
+    signature.textContent = card.name;
+}
+
 
 // обработчик событий для кнопки открытия попапа добавления карточки
-addCardButton.addEventListener('click', () => {
-  openPopup(addCardPopup);
+buttonAddCard.addEventListener('click', () => {
+  openPopup(popupAddCard);
 });
 
 // функция закрытия попапа общая
@@ -73,13 +63,13 @@ function closePopup(popup) {
 }
 
 // обработчик событий для кнопки закрытия попапа редактирования профиля
-closeEditProfileButton.addEventListener('click', () => {
-  closePopup(editProfilePopup);
+buttonCloseEditProfile.addEventListener('click', () => {
+  closePopup(popupEditProfile);
 });
 
 // обработчик событий для кнопки закрытия попапа добавления карточки
-closeAddCardButton.addEventListener('click', () => {
-  closePopup(addCardPopup);
+buttonCloseAddCard.addEventListener('click', () => {
+  closePopup(popupAddCard);
 });
 
 
@@ -90,40 +80,40 @@ const username = document.querySelector('.profile__username');
 const userInfo = document.querySelector('.profile__user-info');
 
 // выбор текстовых полей формы редактирования профиля, где д/отображ-ся имя и статус со страницы
-const inputUsername = editProfilePopup.querySelector('.popup__item_type_username');
-const inputUserInfo = editProfilePopup.querySelector('.popup__item_type_user-info');
+const inputUsername = popupEditProfile.querySelector('.popup__item_type_username');
+const inputUserInfo = popupEditProfile.querySelector('.popup__item_type_user-info');
 
-// извлечение контента со страницы и заполнение им полей формы
-function openFormDefault() {
+// обработчик событий для кнопки открытия попапа редактирования профиля
+// + извлечение контента со страницы и заполнение им полей формы данного попапа
+function openPopupEditProfile() {
   inputUsername.value = username.textContent;
   inputUserInfo.value = userInfo.textContent;
+  openPopup(popupEditProfile);
 }
 
-editProfileButton.addEventListener('click', openFormDefault);
+buttonEditProfile.addEventListener('click', openPopupEditProfile);
 
 
 // 1.3 Редактирование имени и информации о себе
 
 // Находим форму в DOM
-const formProfileElement = editProfilePopup.querySelector('[name="profile edit form"]');
+const formProfileElement = popupEditProfile.querySelector('[name="profile edit form"]');
 
 // Функция обработчика «отправки» формы, хотя пока она никуда отправляться не будет
-function submitFormHandler(evt) {
+function submitFormEditProfile(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
   // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
   username.textContent = inputUsername.value;
   userInfo.textContent = inputUserInfo.value;
+
+  // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
+  closePopup(popupEditProfile);
 }
 
-// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка»
-formProfileElement.addEventListener('submit', submitFormHandler);
-
-// обработчик нажатия на кнопку 'submit', который будет вызывать функцию закрытия попапа
-formProfileElement.addEventListener('submit', () => {
-  closePopup(editProfilePopup);
-});
+// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» + закрытие попапа (см. ф-цию выше)
+formProfileElement.addEventListener('submit', submitFormEditProfile);
 
 // 4. Добавление полноценной карточки через форму / при загрузке страницы
 
@@ -151,36 +141,23 @@ function createCard(card) {
 
   // 6. Удаление карточки
   // выбор кнопок удаления карточек
-  const deleteCard = cardElement.querySelector('.gallery-item__delete-card');
+  const buttonDeleteCard = cardElement.querySelector('.gallery-item__delete-card');
   // слушатель на кнопку удаления, по которой кликнул полз-ль
-  deleteCard.addEventListener('click', function () {
+  buttonDeleteCard.addEventListener('click', function () {
     // кнопка кликнута - выбор ближайшего родлителя кликнутой кнопки
-    const targetToDelete = deleteCard.closest('.gallery-item');
+    const targetToDelete = buttonDeleteCard.closest('.gallery-item');
     // удаление карточки (ближайшего родителя кликнутой кнопки), по иконке удаления которой кликнул пользователь
     targetToDelete.remove();
   })
 
   // 7. Открытие и закрытие фото по клику
   // выбор кнопки-картинки, которая откроет саму картинку в попапе
-  const openPhoto = cardElement.querySelector('.gallery-item__photo');
-  // выбор попапа и кнопки закрытия внутри него
-  const openPhotoPopup = document.querySelector('.popup_type_open-photo');
-  const closePhoto = openPhotoPopup.querySelector('.popup__close-icon_close-photo');
-  // обработчик событий для кнопки открытия попапа с фотографией
-  openPhoto.addEventListener('click', () => {
-    // открытие попапа
-    openPopup(openPhotoPopup);
-    // выбор контейнера попапа
-    const image = openPhotoPopup.querySelector('.popup__opened-image');
-    // заполнение контейнера нужным содержимым (изображение + подпись) в зависимости от кликнутой картинки
-    image.src = card.link;
-    image.alt = card.name;
-    const signature = openPhotoPopup.querySelector('.popup__image-signature');
-    signature.textContent = card.name;
-  });
-  // обработчик событий для кнопки закрытия попапа с фотографией
-  closePhoto.addEventListener('click', () => {
-    closePopup(openPhotoPopup);
+  const buttonOpenPhoto = cardElement.querySelector('.gallery-item__photo');
+
+
+  // обработчик событий для кнопки открытия попапа с фотографией с вызовом функции добавления в попап нужной информации из карточек
+  buttonOpenPhoto.addEventListener('click', () => {
+    openPopupImage (card);
   });
 
   // вернуть готовую карточку со всеми внутренними примочками (лайк, удаление, открытие фото)
@@ -194,7 +171,7 @@ function addCard(card, cardContainer) {
 }
 
 // обработчик события submit для формы добавления новой карточки
-function addFormHandler(evt) {
+function submitFormAddCard(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
@@ -212,12 +189,12 @@ function addFormHandler(evt) {
   //      1 - массив карточек - либо статичный для отрисовки дефолтных, либо массив, создаваемый при передачи данных из фориы добавления карточки;
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   addCard(card, cardContainer);
+
+  //
+  // здесь же - вызов функции закрытия попапа с формой добавления карточки,
+  //          т.к. после нажатия на submit он в любом случае д/закрываться
+  closePopup(popupAddCard);
 }
 
-// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка»
-formAddCardElement.addEventListener('submit', addFormHandler);
-
-// обработчик нажатия на кнопку 'submit', который будет вызывать функцию закрытия попапа
-formAddCardElement.addEventListener('submit', () => {
-  closePopup(addCardPopup);
-});
+// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
+formAddCardElement.addEventListener('submit', submitFormAddCard);
